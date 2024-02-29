@@ -17,5 +17,6 @@ public class MainActivity extends Activity
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.textView, countryList);
         simpleList.setAdapter(arrayAdapter);
 
+
     }
 }

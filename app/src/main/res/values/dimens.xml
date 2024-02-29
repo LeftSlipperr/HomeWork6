@@ -2,4 +2,5 @@
 <resources>
     <dimen name="paddingTop">20dp</dimen>
     <dimen name="paddingBottom">20dp</dimen>
+
 </resources>
