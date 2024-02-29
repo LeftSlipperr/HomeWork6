@@ -5,10 +5,11 @@
     android:orientation="vertical">
 
     <ListView
-        android:id="@+id/simpleListView"
+        android:id="@+id/listView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="@color/material_blue_grey_800"
         android:dividerHeight="1dp"
+
         android:footerDividersEnabled="false" />
 </LinearLayout>
