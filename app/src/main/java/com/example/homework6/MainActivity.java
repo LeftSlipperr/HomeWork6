@@ -18,7 +18,15 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         countries.add(new Country("Молдова", R.drawable.moldova));
-        countries.add(new Country("Америка", R.drawable.america));
+        countries.add(new Country("Австралия", R.drawable.australia));
+        countries.add(new Country("Китай", R.drawable.china));
+        countries.add(new Country("Франция", R.drawable.france));
+        countries.add(new Country("Германия", R.drawable.germany));
+        countries.add(new Country("Венгрия", R.drawable.hungary));
+        countries.add(new Country("Индия", R.drawable.india));
+        countries.add(new Country("Япония", R.drawable.japan));
+        countries.add(new Country("Новая Зеландия", R.drawable.new_zealand));
+        countries.add(new Country("Португалия", R.drawable.portugal));
 
         // Construct the data source
         ArrayList<Country> listCountries = new ArrayList<Country>();
