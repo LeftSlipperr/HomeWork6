@@ -87,20 +87,20 @@ public class ConrtyFragment extends Fragment {
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Country selectedCountry = countries.get(position);
-//                if (getActivity() != null) {
-//                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
-//                    intent.putExtra("flagId", selectedCountry.getFlagId());
-//                    intent.putExtra("countryName", selectedCountry.getName());
-//                    intent.putExtra("capitalName", selectedCountry.getCapital());
-//                    intent.putExtra("square", selectedCountry.getSquare());
-//                    startActivity(intent);
-//                }
-//            }
-//        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Country selectedCountry = countries.get(position);
+                if (getActivity() != null) {
+                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                    intent.putExtra("flagId", selectedCountry.getFlagId());
+                    intent.putExtra("countryName", selectedCountry.getName());
+                    intent.putExtra("capitalName", selectedCountry.getCapital());
+                    intent.putExtra("square", selectedCountry.getSquare());
+                    startActivity(intent);
+                }
+            }
+        });
         return view;
     }
         // Inflate the layout for this fragment
