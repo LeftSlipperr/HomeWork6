@@ -33,21 +33,28 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
-        DetailsViewModel detailsViewModel = new ViewModelProvider(requireActivity()).get(DetailsViewModel.class);
-        // Получение данных о выбранной стране из DetailsViewModel
-        detailsViewModel.getSelectedCountry().observe(getViewLifecycleOwner(), new Observer<Country>() {
 
-            //Подробные данные о стране
-            @Override
-            public void onChanged(Country country) {
-                if (country != null) {
-                    displayCountryDetails(view, country);
-                }
-            }
-        });
+        TextView countryText = view.findViewById(R.id.textCountry);
+        TextView capitalText = view.findViewById(R.id.textCapital);
+        TextView squareText = view.findViewById(R.id.squareText);
+        ImageView flag = view.findViewById(R.id.imageView);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            String countryName = args.getString("countryName");
+            String capitalName = args.getString("capitalName");
+            int square = args.getInt("square");
+            int flagId = args.getInt("flagId");
+
+            countryText.setText(countryName);
+            capitalText.setText("Столица: " + capitalName);
+            squareText.setText("Площадь: " + square);
+            flag.setImageResource(flagId);
+        }
 
         return view;
     }
+
 
     //Создаю инстанс для того чтобы положить данные
     public static DetailsFragment newInstance(String countryName, String capitalName, int square, int flagId) {
@@ -57,13 +64,13 @@ public class DetailsFragment extends Fragment {
         args.putString("capitalName", capitalName);
         args.putInt("square", square);
         args.putInt("flagId", flagId);
-        fragment.setArguments(args);
+        fragment.setArguments(args); // Установка аргументов в фрагмент
         return fragment;
     }
 
+
     //метод для отображения подробностей о стране
     private void displayCountryDetails(View view, Country country) {
-
         TextView countryText = view.findViewById(R.id.textCountry);
         countryText.setText(country.getName());
 

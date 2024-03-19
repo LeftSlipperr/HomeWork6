@@ -12,7 +12,8 @@ import java.util.List;
 
 public class CountriesViewModel extends ViewModel {
 
-    public MutableLiveData<List<Country>> countries = new MutableLiveData<>();
+    private MutableLiveData<List<Country>> countries = new MutableLiveData<>();
+    private MutableLiveData<Country> selectedCountry = new MutableLiveData<>();
 
     public CountriesViewModel(){
 
@@ -36,4 +37,14 @@ public class CountriesViewModel extends ViewModel {
         return countries;
     }
 
+    public void setSelectedCountry(Country country) {
+        selectedCountry.setValue(country);
+    }
+
+    public LiveData<Country> getSelectedCountry() {
+        return selectedCountry;
+    }
+
 }
+
+

@@ -1,64 +1,48 @@
 package com.example.homework6;
 
-import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConrtyFragment extends Fragment {
 
-    //Пустой конструктор
     public ConrtyFragment() {
-
+        // Пустой конструктор требуется
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        CountriesViewModel viewModel = new ViewModelProvider(this).get(CountriesViewModel.class);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_conrty, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-        ListView listView = view.findViewById(R.id.listView);
 
-        viewModel.getCountries().observe(getViewLifecycleOwner(), new Observer<List<Country>>() {
-            @Override
-            public void onChanged(List<Country> countries) {
-                // Здесь countries - это актуальный список стран, который вы получили из ViewModel
-                CustomAdapter adapter = new CustomAdapter(getActivity(), countries);
-                listView.setAdapter(adapter);
-            }
+        CountriesViewModel viewModel = new ViewModelProvider(requireActivity()).get(CountriesViewModel.class);
+        viewModel.getCountries().observe(getViewLifecycleOwner(), countries -> {
+            CustomAdapter adapter = new CustomAdapter(getActivity(), countries);
+            adapter.setOnItemClickListener(new CustomAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Country country) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    DetailsFragment detailsFragment = DetailsFragment.newInstance(country.getName(), country.getCapital(), country.getSquare(), country.getFlagId());
+                    fragmentTransaction.replace(R.id.fragment_container, detailsFragment);
+                    fragmentTransaction.addToBackStack(null); // Добавляем транзакцию в стек возврата
+                    fragmentTransaction.commit();
+                }
+            });
+            recyclerView.setAdapter(adapter);
         });
-
-
-        // Обработка клика по стране
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Country selectedCountry = viewModel.getCountries().getValue().get(position);
-
-                DetailsViewModel detailsViewModel = new ViewModelProvider(requireActivity()).get(DetailsViewModel.class);
-                detailsViewModel.selectCountry(selectedCountry);
-
-                DetailsFragment detailsFragment = DetailsFragment.newInstance(selectedCountry.getName(), selectedCountry.getCapital(), selectedCountry.getSquare(), selectedCountry.getFlagId());
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, detailsFragment).addToBackStack(null).commit();
-            }
-        });
-
-
-
 
         return view;
     }
 }
-

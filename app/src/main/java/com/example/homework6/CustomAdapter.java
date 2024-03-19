@@ -1,42 +1,65 @@
 package com.example.homework6;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.homework6.R;
-
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-import java.util.zip.Inflater;
 
-public class CustomAdapter extends ArrayAdapter<Country> {
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+    private List<Country> countries;
+    private LayoutInflater inflater;
+    public interface OnItemClickListener {
+        void onItemClick(Country country);
+    }
+    private OnItemClickListener listener;
+
+
+    // Конструктор адаптера
     public CustomAdapter(Context context, List<Country> countries) {
-        super(context, 0, countries);
+        this.inflater = LayoutInflater.from(context);
+        this.countries = countries;
+    }
+
+    // Установка слушателя кликов
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Country country = getItem(position);
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_listview, parent, false);
-        }
-
-        TextView tvName = convertView.findViewById(R.id.textView);
-        ImageView ivFlag = convertView.findViewById(R.id.icon);
-
-
-        // Заполняем данные
-        tvName.setText(country.getName());
-        ivFlag.setImageResource(country.getFlagId());
-
-        return convertView;
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.activity_listview, parent, false);
+        return new ViewHolder(view);
     }
 
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Country country = countries.get(position);
+        holder.tvName.setText(country.getName());
+        holder.ivFlag.setImageResource(country.getFlagId());
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(country);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return countries.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvName;
+        ImageView ivFlag;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            tvName = itemView.findViewById(R.id.textView);
+            ivFlag = itemView.findViewById(R.id.icon);
+        }
+    }
 }
