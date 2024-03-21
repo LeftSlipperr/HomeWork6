@@ -2,13 +2,13 @@ package com.example.homework6;
 
 public class Country {
     private String name;
-    private Integer flagId;
+    private String flagUrl;
     private Integer square;
     private String capital;
 
-    public Country(String name, Integer flagId, Integer square, String capital){
+    public Country(String name, String flagUrl, Integer square, String capital){
         this.name = name;
-        this.flagId = flagId;
+        this.flagUrl = flagUrl;
         this.capital = capital;
         this.square = square;
     }
@@ -16,8 +16,8 @@ public class Country {
         return name;
     }
 
-    public Integer getFlagId() {
-        return flagId;
+    public String getFlagUrl() {
+        return flagUrl;
     }
 
     public Integer getSquare() {

@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
 
     <ImageView
-        android:id="@+id/icon"
-        android:layout_width="50sp"
-        android:layout_height="120sp"
-        android:src="@drawable/america"/>
+        android:id="@+id/flagUrl"
+        android:layout_width="64dp"
+        android:layout_height="48dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="40dp"
-        android:layout_gravity="center"
-        android:textColor="@color/black"
-        android:text="Country"/>
+        android:layout_marginStart="16dp"
+        android:textSize="18sp"
+        app:autoSizeTextType="uniform" />
+
 </LinearLayout>

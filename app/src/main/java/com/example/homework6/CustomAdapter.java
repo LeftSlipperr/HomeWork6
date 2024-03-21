@@ -10,12 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.homework6.R;
 
 import java.util.List;
 import java.util.zip.Inflater;
 
 public class CustomAdapter extends ArrayAdapter<Country> {
+
     public CustomAdapter(Context context, List<Country> countries) {
         super(context, 0, countries);
     }
@@ -28,15 +30,15 @@ public class CustomAdapter extends ArrayAdapter<Country> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_listview, parent, false);
         }
 
-        TextView tvName = convertView.findViewById(R.id.textView);
-        ImageView ivFlag = convertView.findViewById(R.id.icon);
+        TextView textView = convertView.findViewById(R.id.textView);
+        ImageView imageView = convertView.findViewById(R.id.flagUrl);
 
+        textView.setText(country.getName());
 
-        // Заполняем данные
-        tvName.setText(country.getName());
-        ivFlag.setImageResource(country.getFlagId());
+        Glide.with(getContext())
+                .load(country.getFlagUrl())
+                .into(imageView);
 
         return convertView;
     }
-
 }
