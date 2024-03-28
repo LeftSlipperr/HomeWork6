@@ -12,14 +12,26 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
+public class MainActivity extends Activity {
+    Retrofit retrofit;
+    CountryApi api;
     List<Country> countries = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String url = "https://restcountries.com/v3.1/";
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        api = retrofit.create(CountryApi.class);
 
         countries.add(new Country("Moldova", R.drawable.moldova, 250, "Chisinau"));
         countries.add(new Country("Australia", R.drawable.australia, 1500, "Canberra"));
