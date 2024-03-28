@@ -3,6 +3,8 @@ package com.example.homework6;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +50,14 @@ public class DetailsActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(country.getFlags().png)
                 .into(ivFlag);
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Действие при нажатии кнопки "Назад"
+                finish(); // Закрываем DetailsActivity и возвращаемся на предыдущий экран
+            }
+        });
     }
 }
 
