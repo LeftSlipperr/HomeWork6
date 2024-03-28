@@ -7,8 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".DetailsActivity">
 
+    <TextView
+        android:id="@+id/populationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Population"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/squareText"
+        app:layout_constraintVertical_bias="0.263"
+        tools:ignore="MissingConstraints" />
+
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/flagImageView"
         android:layout_width="150sp"
         android:layout_height="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,35 +34,36 @@
         app:layout_constraintVertical_bias="0.274" />
 
     <TextView
-        android:id="@+id/textCountry"
+        android:id="@+id/countryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Country"
+        android:textColor="@color/black"
         android:textSize="35dp"
         android:textStyle="bold"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/flagImageView"
         app:layout_constraintVertical_bias="0.119"
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textCapital"
+        android:id="@+id/capitalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="284dp"
         android:text="Capital"
-        android:textSize="25dp"
         android:textColor="@color/black"
+        android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCountry"
-        app:layout_constraintVertical_bias="0.157"
+        app:layout_constraintTop_toBottomOf="@+id/countryName"
+        app:layout_constraintVertical_bias="0.59"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -54,14 +71,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="184dp"
         android:text="Square"
-        android:textSize="25dp"
         android:textColor="@color/black"
+        android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCapital"
-        app:layout_constraintVertical_bias="0.216"
+        app:layout_constraintTop_toBottomOf="@+id/capitalText"
+        app:layout_constraintVertical_bias="0.62"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,10 +6,12 @@
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/material_blue_grey_800"
-        android:dividerHeight="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="16dp"
+        android:clipToPadding="false"
+        />
 
-        android:footerDividersEnabled="false" />
 </LinearLayout>

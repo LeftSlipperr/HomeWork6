@@ -1,5 +1,6 @@
 package com.example.homework6;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -11,26 +12,42 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
+
 public class DetailsActivity extends AppCompatActivity {
+    private TextView tvName;
+    private TextView tvCapital;
+    private TextView tvSquare;
+    private ImageView ivFlag;
+
+    private TextView tvPopulation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        // Получение данных из Intent
-        String countryName = getIntent().getStringExtra("countryName");
-        String capitalName = getIntent().getStringExtra("capitalName");
-        Integer square = getIntent().getIntExtra("square", 0);
-        Integer flagId = getIntent().getIntExtra("flagId", 0);
 
-        // Отображение страны
-        TextView countryText = findViewById(R.id.textCountry);
-        countryText.setText(countryName);
-        ImageView flag = findViewById(R.id.imageView);
-        flag.setImageResource(flagId);
-        TextView capitalText = findViewById(R.id.textCapital);
-        capitalText.setText("Столица: "+ capitalName);
-        TextView squareText = findViewById(R.id.squareText);
-        squareText.setText("Площадь: "+square.toString());
+        // Получаем данные о стране из Intent
+        Intent intent = getIntent();
+        Country country = (Country) intent.getSerializableExtra("country");
+
+        // Находим все TextView и ImageView в макете
+        tvName = findViewById(R.id.countryName);
+        tvCapital = findViewById(R.id.capitalText);
+        tvSquare = findViewById(R.id.squareText);
+        ivFlag = findViewById(R.id.flagImageView);
+        tvPopulation = findViewById(R.id.populationText);
+
+        // Устанавливаем текст для TextView
+        tvName.setText("Название: " + country.getName());
+        tvCapital.setText("Столица: " + country.getCapital());
+        tvSquare.setText("Площадь: " + country.getArea() + " М2");
+        tvPopulation.setText("Население: " + country.getPopulation() + " человек");
+
+        // Загружаем изображение флага с помощью Glide
+        Glide.with(this)
+                .load(country.getFlags().png)
+                .into(ivFlag);
     }
 }
+

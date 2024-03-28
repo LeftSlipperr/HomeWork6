@@ -5,67 +5,91 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends Activity {
-    Retrofit retrofit;
-    CountryApi api;
-    List<Country> countries = new ArrayList<>();
+    private Retrofit retrofit;
+    private CountryApi api;
+    private ListView listView;
+    private CustomAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String url = "https://restcountries.com/v3.1/";
+        String baseUrl = "https://restcountries.com/v3.1/";
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         api = retrofit.create(CountryApi.class);
 
-        countries.add(new Country("Moldova", R.drawable.moldova, 250, "Chisinau"));
-        countries.add(new Country("Australia", R.drawable.australia, 1500, "Canberra"));
-        countries.add(new Country("China", R.drawable.china, 1300, "Beijing"));
-        countries.add(new Country("France", R.drawable.france, 800, "Paris"));
-        countries.add(new Country("Germany", R.drawable.germany, 700, "Berlin"));
-        countries.add(new Country("Hungary", R.drawable.hungary, 300, "Budapest"));
-        countries.add(new Country("India", R.drawable.india, 1000, "New Delhi"));
-        countries.add(new Country("Japan", R.drawable.japan, 350, "Tokyo"));
-        countries.add(new Country("New-Zealand", R.drawable.new_zealand, 650, "Wellington"));
-        countries.add(new Country("Portugal", R.drawable.portugal, 200, "Lisbon"));
+        // Определяем действия при клике на элемент списка
+        listView = findViewById(R.id.listView);
 
-        // Construct the data source
-        ArrayList<Country> listCountries = new ArrayList<Country>();
-        listCountries.addAll(countries);
-        // Create the adapter to convert the array to views
-        CustomAdapter adapter = new CustomAdapter(this, countries);
-        // Attach the adapter to a ListView
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        // Получаем список стран с сервера
+        Call<List<Country>> call = api.getAllCountry();
+        call.enqueue(new Callback<List<Country>>() {
+            @Override
+            public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                List<Country> countries = response.body();
+                // Создаем адаптер и присваиваем его ListView
+                adapter = new CustomAdapter(MainActivity.this, countries);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Country>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Определяем действия при клике на элемент списка
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Country selectedCountry = countries.get(position);
-                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                intent.putExtra("flagId", selectedCountry.getFlagId());
-                intent.putExtra("countryName", selectedCountry.getName());
-                intent.putExtra("capitalName", selectedCountry.getCapital());
-                intent.putExtra("square", selectedCountry.getSquare());
-                startActivity(intent);
+                Country selectedCountry = adapter.getItem(position);
+
+                // Получаем информацию о выбранной стране по её коду
+                Call<Country> call = api.getCountry(selectedCountry.code);
+                call.enqueue(new Callback<Country>() {
+                    @Override
+                    public void onResponse(Call<Country> call, Response<Country> response) {
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(MainActivity.this, "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        Country detailedCountry = response.body();
+                        // Переходим на экран с подробной информацией о стране
+                        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                        intent.putExtra("country", detailedCountry);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Country> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
     }
-
 }

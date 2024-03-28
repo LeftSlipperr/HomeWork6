@@ -1,45 +1,57 @@
 package com.example.homework6;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+import java.util.List;
 
-public class Country {
+public class Country implements Serializable {
     @SerializedName("cca2")
     public String code;
 
     public Flags flags;
-    private String name;
-    private Integer flagId;
-    private Integer square;
-    private String capital;
+    public Names name;
+    private double area; // изменено на List<String>
+    private List<String> capital; // изменено на List<String>
 
-    public Country(String name, Integer flagId, Integer square, String capital){
+    private Integer population;
+
+    public Country(String code, Flags flags, Names name, double area, List<String> capital, Integer population){
+        this.code = code;
+        this.flags = flags;
         this.name = name;
-        this.flagId = flagId;
+        this.area = area;
         this.capital = capital;
-        this.square = square;
+        this.population = population;
     }
-    public static class Flags{
+
+    public static class Flags implements Serializable{
         public String png;
         public String svg;
         public String alt;
     }
-    public static class Names {
+
+    public static class Names implements Serializable {
         public String common;
         public String official;
     }
+
     public String getName() {
-        return name;
+        return name.common;
     }
 
-    public Integer getFlagId() {
-        return flagId;
+    public double getArea() { // изменено на List<String>
+        return area;
     }
 
-    public Integer getSquare() {
-        return square;
+    public String getCapital() { // изменено на List<String>
+        return capital.get(0);
     }
 
-    public String getCapital() {
-        return capital;
+    public Flags getFlags() {
+        return flags;
+    }
+
+    public Integer getPopulation() {
+        return population;
     }
 }
